@@ -22,11 +22,11 @@ async function save(score) {
       {goal.name}
 
       <span>
-        {#if avgLastSeven}
+        {#if avgLastSeven != undefined}
           <span class="uk-badge">Past Week Avg: {avgLastSeven}</span>
         {/if}
 
-        {#if avgPreviousSeven}
+        {#if avgPreviousSeven != undefined}
           <span class="uk-badge">Previous Week Avg: {avgPreviousSeven}</span>
         {/if}
       </span>
