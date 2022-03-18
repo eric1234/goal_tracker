@@ -5,7 +5,7 @@ import LiveFindPlugin from 'pouchdb-live-find'
 PouchDB.plugin(FindPlugin)
 PouchDB.plugin(LiveFindPlugin)
 
-const db = new PouchDB('tracker')
+const db = new PouchDB('tracker', { auto_compaction: true })
 export default db
 
 let activeFeeds = {}
