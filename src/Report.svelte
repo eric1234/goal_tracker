@@ -28,12 +28,13 @@ $: goalCount = Object.values(goals).length
 onMount(()=> feed({ type: 'goal', active: true }, results => goals = keyBy(results, '_id')))
 
 let existingGrades = []
+$: activeGrades = existingGrades.filter(g => goals[goalIdFromGrade(g)])
 $: feed({_id: { $regex: `^grade/${params.day}` }}, (results => existingGrades = results), 'grades')
 
 $: existingGoals = uniq(existingGrades.map(e => goalIdFromGrade(e)))
 $: missingGoals = Object.values(goals).filter(g => !existingGoals.includes(g._id))
 $: missingGrades = missingGoals.map(g => newGrade(g))
-$: grades = sortBy(existingGrades.concat(missingGrades), grade => goals[goalIdFromGrade(grade)]?.name)
+$: grades = sortBy(activeGrades.concat(missingGrades), grade => goals[goalIdFromGrade(grade)]?.name)
 
 function avgBetween(queryId, startDate, endDate, callback) {
   feed(
@@ -66,9 +67,7 @@ onDestroy(cancel)
         avgLastSeven={avgLastSeven[goalIdFromGrade(grade)]}
         avgPreviousSeven={avgPreviousSeven[goalIdFromGrade(grade)]} />
     {/each}
-
-    {#if grades.length == 0}
-      <p>No goals configured. Click cog icon to configure.</p>
-    {/if}
   </form>
+{:else}
+  <p>No goals configured. Click cog icon to configure.</p>
 {/if}
