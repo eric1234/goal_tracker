@@ -1,3 +1,5 @@
+# Goal Tracker
+
 This project will allow you to define daily goals you want to accomplish for
 yourself. Each day you can grade yesterday's goals on a scale 0-10. It will
 report some statistics for you to indicate if you are improving or getting

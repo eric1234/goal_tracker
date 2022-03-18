@@ -1,9 +1,11 @@
-import svelte from 'rollup-plugin-svelte';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
-import css from 'rollup-plugin-css-only';
+import svelte from 'rollup-plugin-svelte'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import livereload from 'rollup-plugin-livereload'
+import { terser } from 'rollup-plugin-terser'
+import path from 'path'
+import postcss from 'rollup-plugin-postcss'
+import builtins from 'rollup-plugin-node-builtins'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -11,7 +13,7 @@ function serve() {
 	let server;
 
 	function toExit() {
-		if (server) server.kill(0);
+		if (server) server.kill(0)
 	}
 
 	return {
@@ -20,10 +22,10 @@ function serve() {
 			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
 				shell: true
-			});
+			})
 
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
+			process.on('SIGTERM', toExit)
+			process.on('exit', toExit)
 		}
 	};
 }
@@ -37,6 +39,7 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		builtins(),
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production
@@ -45,7 +48,9 @@ export default {
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		postcss({
+  		extract: path.resolve('public/build/bundle.css')
+		}),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -56,7 +61,7 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
-		commonjs(),
+		commonjs({ requireReturnsDefault: 'preferred' }),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
@@ -73,4 +78,4 @@ export default {
 	watch: {
 		clearScreen: false
 	}
-};
+}

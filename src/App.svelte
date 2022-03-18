@@ -1,30 +1,22 @@
 <script>
-	export let name;
+export let routes
+export let onFail
+
+import Router from 'svelte-spa-router'
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+<main class="uk-container uk-container-xsmall">
+
+  <nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-center">
+      <a href="#/" class="uk-navbar-item uk-logo">Goal Tracker</a>
+    </div>
+    <div class="uk-navbar-right">
+      <div class="uk-navbar-nav">
+        <li><a href="#/settings" uk-icon="cog"><span class="sr-only">Settings</span></a></li>
+      </div>
+    </div>
+  </nav>
+
+  <Router {routes} on:conditionsFailed={onFail} />
 </main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
