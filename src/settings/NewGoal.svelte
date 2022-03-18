@@ -1,6 +1,5 @@
 <script>
 import db from '../db'
-import { fail } from '../util'
 
 function newRecord() {
   return {
@@ -14,10 +13,8 @@ function newRecord() {
 let newGoal = newRecord()
 
 async function addGoal() {
-  try {
-    await db.post(newGoal)
-    newGoal = newRecord()
-  } catch(e) { fail(e) }
+  await db.post(newGoal)
+  newGoal = newRecord()
 }
 </script>
 

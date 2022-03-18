@@ -3,15 +3,12 @@ import { createEventDispatcher } from 'svelte'
 const dispatch = createEventDispatcher()
 
 import db from '../../db'
-import { fail } from '../../util'
 
 export let goal
 
 async function save() {
-  try {
-    await db.put(goal)
-    dispatch('toggle')
-  } catch(e) { fail(e) }
+  await db.put(goal)
+  dispatch('toggle')
 }
 
 function remove() { db.put(Object.assign({}, goal, { active: false })) }

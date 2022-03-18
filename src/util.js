@@ -7,8 +7,3 @@ export function meanByInGroupBy(collection, groupIterator, meanIterator, precisi
   })
   return grouped
 }
-
-export function fail(error) {
-  alert(error.message)
-  throw error
-}

@@ -11,6 +11,16 @@ import App from './App.svelte'
 import Report from './Report.svelte'
 import Settings from './Settings.svelte'
 
+// Setup global event handlers to catch any errors or uncaught promises and
+// display to user. The user may not know why or how to fix it but they know
+// something went wrong and at least know to be cautious and has something to
+// report.
+//
+// Both handlers to do not call `preventDefault` as we want the original
+// error to still log in the console with a stacktrace so we can debug.
+window.addEventListener('error', event => alert(event.message))
+window.onunhandledrejection = event => alert(`Unhandled error in async call: ${event.reason}`)
+
 const routes = {
   '/settings': Settings,
   '/:day': Report,
@@ -20,7 +30,7 @@ const routes = {
   }),
 }
 
-function onFail(event) {
+function onRouteFail(event) {
   if( event.detail.route == '/' ) {
     const yesterday = DateTime.now().minus({day: 1}).toISODate()
     replace(`/${yesterday}`)
@@ -29,5 +39,5 @@ function onFail(event) {
 
 export default new App({
   target: document.body,
-  props: { routes, onFail }
+  props: { routes, onFail: onRouteFail }
 })

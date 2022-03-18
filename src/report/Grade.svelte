@@ -2,7 +2,6 @@
 import { range } from 'lodash'
 
 import db from '../db'
-import { fail } from '../util'
 
 export let grade
 export let goal
@@ -10,9 +9,7 @@ export let avgLastSeven
 export let avgPreviousSeven
 
 async function save(score) {
-  try {
-    await db.put(Object.assign(grade, { value: score }))
-  } catch(e) { fail(e) }
+  await db.put(Object.assign(grade, { value: score }))
 }
 </script>
 
